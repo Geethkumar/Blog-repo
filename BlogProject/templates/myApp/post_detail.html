@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{%extends 'myApp/parent.html'%}
+{%block title_block%}
+<h2>{{post.title}}</h2>
+{%endblock%}
+  <body>
+    {%block content_block%}
+    <h1>{{post.title}}</h1>
+    <p>Published on {{post.publish}} by {{post.author|title}}</p>
+    {{post.body|linebreaks}} <br><br>
+    <a href="/{{post.id}}/share" class="btn btn-lg btn btn-primary">Post By Mail</a>
+
+    {%with comments.count as comments_count%}
+    <h2>{{comments_count}} Comment{{comments_count|pluralize}}</h2>
+    {%endwith%}
+    {%if commments%}
+      {%for c in comments%}
+      <p>Comment {{forloop.counter}} by {{c.name}}</p>
+    <div>{{c.body|linebreaks}}</div>
+    <hr>
+    {%endfor%}
+    {%else%}
+      <p style="color:orange;font-size: 30px;font-style: italic; border-bottom:2px red solid">There are no Comments</p>
+    {%endif%}
+     {%if csubmit%}
+     <h2>Thank You...Your comment has been added successfully</h2>
+    {%else%}
+    <form  method="post">
+        {{form.as_p}}
+        {%csrf_token%}
+        <input type="submit" class="btn btn-lg btn-primary" value="Submit">
+      </form>
+      {%endif%}
+    {%endblock%}
+  </body>
+</html>
